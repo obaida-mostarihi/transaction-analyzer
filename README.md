@@ -168,9 +168,50 @@ POST /api/upload
 
 ```json
 {
-  "message": "File uploaded successfully",
-  "file_id": "abc123xyz"
+  "normalized_transactions": [
+    {
+      "original": "NFLX DIGITAL NTFLX US",
+      "normalized": {
+        "merchant": "Netflix",
+        "category": "Entertainment",
+        "sub_category": "Streaming Service",
+        "confidence": 0.98,
+        "is_subscription": true,
+        "flags": ["subscription", "digital_service"]
+      }
+    },
+    {
+      "original": "UBER   *TRIP HELP.UBER.CO",
+      "normalized": {
+        "merchant": "Uber",
+        "category": "Transportation",
+        "sub_category": "Ride Sharing",
+        "confidence": 0.96,
+        "is_subscription": false,
+        "flags": ["transportation", "service"]
+      }
+    }
+  ],
+  "detected_patterns": [
+    {
+      "type": "subscription",
+      "merchant": "Netflix",
+      "amount": 19.99,
+      "frequency": "monthly",
+      "confidence": 0.98,
+      "next_expected": "2024-02-15"
+    },
+    {
+      "type": "recurring",
+      "merchant": "Uber",
+      "amount": "~35.00",
+      "frequency": "weekly",
+      "confidence": 0.85,
+      "notes": "Regular weekend activity"
+    }
+  ]
 }
+
 ```
 
 ## Setup Instructions
