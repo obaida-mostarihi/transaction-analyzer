@@ -58,6 +58,142 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
+## Environment Variables
+
+The following environment variables are required for the application to function properly:
+
+```plaintext
+OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_MODEL=your_openai_model_here
+```
+
+Ensure that these variables are set in your `.env` file before running the application.
+
+## API Documentation
+
+### 1. Merchant Name Normalization
+
+**Endpoint:**
+
+```plaintext
+POST /api/analyze/merchant
+```
+
+**Description:** Processes transaction descriptions and normalizes merchant names.
+
+**Request Body:**
+
+```json
+{
+  "transaction": {
+    "description": "AMZN MKTP US*Z1234ABC",
+    "amount": -89.97,
+    "date": "2024-01-15"
+  }
+}
+```
+
+**Response:**
+
+```json
+{
+  "normalized": {
+    "merchant": "Amazon",
+    "category": "Shopping",
+    "sub_category": "Online Retail",
+    "confidence": 0.95,
+    "is_subscription": false,
+    "flags": ["online_purchase"],
+    "marketplace": true
+  }
+}
+```
+
+### 2. Pattern Detection
+
+**Endpoint:**
+
+```plaintext
+POST /api/analyze/patterns
+```
+
+**Description:** Detects recurring transaction patterns such as subscriptions.
+
+**Request Body:**
+
+```json
+{
+  "transactions": [
+    {
+      "description": "NETFLIX",
+      "amount": -19.99,
+      "date": "2024-01-01"
+    }
+  ]
+}
+```
+
+**Response:**
+
+```json
+{
+  "patterns": [
+    {
+      "type": "subscription",
+      "merchant": "Netflix",
+      "amount": 19.99,
+      "frequency": "monthly",
+      "confidence": 0.98,
+      "next_expected": "2024-02-01"
+    }
+  ]
+}
+```
+
+### 3. File Upload
+
+**Endpoint:**
+
+```plaintext
+POST /api/upload
+```
+
+**Description:** Uploads a file containing financial transactions for processing.
+
+**Request Body:**
+
+- Multipart form-data containing a `.csv` file.
+
+**Response:**
+
+```json
+{
+  "message": "File uploaded successfully",
+  "file_id": "abc123xyz"
+}
+```
+
+## Setup Instructions
+
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/your-repo.git
+   ```
+2. Install dependencies:
+   ```sh
+   cd your-repo
+   npm install
+   ```
+3. Create a `.env` file and add the required environment variables.
+4. Start the development server:
+   ```sh
+   npm run start:dev
+   ```
+
+Ensure you have the required `.env` variables properly configured before running the application.
+
+
+
 ## Deployment
 
 When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
